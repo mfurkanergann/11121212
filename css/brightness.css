@@ -1,0 +1,7 @@
+:root {
+    --brightness: 100%;
+}
+
+body {
+    filter: brightness(var(--brightness)) !important;
+}

@@ -1,0 +1,222 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ofis Oyunu</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/brightness.css">
+</head>
+<body>
+    <!-- Yükleme Ekranı -->
+    <div id="loading-screen">
+        <div class="loading-container">
+            <img src="assets/images/loading-background.jpg" alt="Loading Background" class="loading-background">
+            <div class="loading-content">
+                <div class="progress-container">
+                    <div id="loading-progress" class="progress-bar"></div>
+                </div>
+                <div id="loading-text">Yükleniyor... 0%</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Ana Menü -->
+    <div id="main-menu" style="display: none;">
+        <div class="menu-container">
+            <button id="continue" class="menu-button">Devam Et</button>
+            <button id="newGame" class="menu-button">Yeni Oyun</button>
+            <button id="howToPlay" class="menu-button">Nasıl Oynanır</button>
+            <button id="settings" class="menu-button">Ayarlar</button>
+            <button id="exit" class="menu-button">Çıkış</button>
+        </div>
+    </div>
+
+    <!-- Profiller Ekranı -->
+    <div id="profiles-screen" style="display: none;">
+        <div class="profiles-container">
+            <h2>Profiller</h2>
+            <div id="profiles-container" class="profiles-list">
+                <!-- Profiller buraya dinamik olarak eklenecek -->
+            </div>
+            <div class="profiles-actions">
+                <button id="back-to-menu" class="menu-button">Ana Menüye Dön</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Oyun Ekranı -->
+    <div id="game-screen" style="display: none;">
+        <div class="scene">
+            <button id="backButton" class="back-button menu-button">Ana Menüye Dön</button>
+            <div class="office-scene">
+                <div class="clickable-items">
+                    <div id="calendar" class="clickable-item" data-type="calendar">
+                        <img src="assets/images/office/calendar.png" alt="Takvim">
+                    </div>
+                    <div id="constitution" class="clickable-item" data-type="constitution">
+                        <img src="assets/images/office/constitution.png" alt="Anayasa Kitabı">
+                    </div>
+                    <div id="laptop" class="clickable-item" data-type="laptop">
+                        <img src="assets/images/office/laptop.png" alt="Laptop">
+                    </div>
+                    <div id="case-files" class="clickable-item" data-type="case-files">
+                        <img src="assets/images/office/case-files.png" alt="Dava Dosyaları">
+                    </div>
+                </div>
+                <img src="assets/images/office/background.jpg" alt="Ofis Arka Plan" class="office-background">
+            </div>
+        </div>
+    </div>
+
+    <!-- Öğe Detay Popup -->
+    <div id="itemDetailPopup" class="popup-overlay" style="display: none;">
+        <div class="popup">
+            <h2 id="itemDetailTitle"></h2>
+            <div id="itemDetailContent" class="item-detail-content">
+                <!-- Öğe detayları buraya dinamik olarak eklenecek -->
+            </div>
+            <div class="popup-buttons">
+                <button id="closeItemDetail" class="popup-button confirm">Kapat</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Çıkış Popup -->
+    <div id="exitPopup" class="popup-overlay">
+        <div class="popup">
+            <h2>Çıkış</h2>
+            <p>Oyundan çıkmak istediğinize emin misiniz?</p>
+            <div class="popup-buttons">
+                <button id="confirmExit" class="popup-button confirm">Evet</button>
+                <button id="cancelExit" class="popup-button cancel">Hayır</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Profil Silme Popup -->
+    <div id="deleteProfilePopup" class="popup-overlay">
+        <div class="popup">
+            <h2>Profili Sil</h2>
+            <p><span id="deleteProfileName"></span> profilini silmek istediğinize emin misiniz?</p>
+            <div class="popup-buttons">
+                <button id="confirmDeleteProfile" class="popup-button confirm">Evet</button>
+                <button id="cancelDeleteProfile" class="popup-button cancel">Hayır</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Ayarlar Popup -->
+    <div id="settingsPopup" class="popup-overlay">
+        <div class="popup settings-popup">
+            <h2>Ayarlar</h2>
+            <div class="settings-container">
+                <div class="settings-section">
+                    <h3>Görüntü</h3>
+                    <div class="setting-item">
+                        <label for="brightnessSlider">Parlaklık</label>
+                        <div class="slider-container">
+                            <input type="range" id="brightnessSlider" min="50" max="150" value="100">
+                            <span class="slider-value">100%</span>
+                        </div>
+                    </div>
+                    <div class="setting-item">
+                        <label>Tam Ekran</label>
+                        <button id="toggleFullscreen" class="settings-button">Tam Ekran</button>
+                    </div>
+                </div>
+                <div class="settings-section">
+                    <h3>Ses</h3>
+                    <div class="setting-item">
+                        <label for="musicSlider">Müzik</label>
+                        <div class="slider-container">
+                            <input type="range" id="musicSlider" min="0" max="100" value="80">
+                            <span class="slider-value">80%</span>
+                        </div>
+                    </div>
+                    <div class="setting-item">
+                        <label for="effectsSlider">Efektler</label>
+                        <div class="slider-container">
+                            <input type="range" id="effectsSlider" min="0" max="100" value="100">
+                            <span class="slider-value">100%</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="settings-section">
+                    <h3>Dil</h3>
+                    <div class="setting-item">
+                        <label for="languageSelect">Dil Seçimi</label>
+                        <select id="languageSelect" class="settings-select">
+                            <option value="tr">Türkçe</option>
+                            <option value="en" disabled>English</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+            <div class="popup-buttons">
+                <button id="saveSettings" class="popup-button confirm">Kaydet</button>
+                <button id="cancelSettings" class="popup-button cancel">İptal</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Profil Oluşturma Popup -->
+    <div id="createProfilePopup" class="popup-overlay">
+        <div class="popup profile-popup">
+            <h2>Profil Oluştur</h2>
+            <div class="profile-container">
+                <div class="profile-section">
+                    <label for="profileName">Profil Adı</label>
+                    <input type="text" id="profileName" placeholder="Profil adınızı girin">
+                </div>
+                <div class="profile-section">
+                    <label>Avatar Seçimi</label>
+                    <div class="avatar-selection">
+                        <button id="prevAvatar" class="avatar-nav-button" type="button">&lt;</button>
+                        <div class="avatar-container">
+                            <div class="avatar-option">
+                                <img src="assets/images/avatars/avatar1.png" alt="Avatar 1">
+                            </div>
+                        </div>
+                        <button id="nextAvatar" class="avatar-nav-button" type="button">&gt;</button>
+                    </div>
+                </div>
+            </div>
+            <div class="popup-buttons">
+                <button id="createProfile" class="popup-button confirm" disabled>Oluştur</button>
+                <button id="cancelProfile" class="popup-button cancel">İptal</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Nasıl Oynanır Popup -->
+    <div id="howToPlayPopup" class="popup-overlay">
+        <div class="popup how-to-play-popup">
+            <h2>Nasıl Oynanır</h2>
+            <div class="how-to-play-container">
+                <div class="how-to-play-section">
+                    <p>1. Ofis ortamındaki nesnelere tıklayarak etkileşime geçin.</p>
+                    <p>2. Her nesne size farklı görevler ve bilgiler sunar.</p>
+                    <p>3. Görevleri tamamlayarak puan kazanın.</p>
+                    <p>4. Yüksek skor elde etmeye çalışın!</p>
+                </div>
+            </div>
+            <div class="popup-buttons">
+                <button id="closeHowToPlay" class="popup-button confirm">Anladım</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Ses Elementleri -->
+    <audio id="backgroundMusic" loop>
+        <source src="assets/audio/background-music.mp3" type="audio/mpeg">
+    </audio>
+
+    <!-- JavaScript Dosyaları -->
+    <script src="js/audio.js"></script>
+    <script src="js/loader.js"></script>
+    <script src="js/profiles.js"></script>
+    <script src="js/menu.js"></script>
+    <script src="js/game.js"></script>
+</body>
+</html>
